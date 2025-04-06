@@ -164,7 +164,7 @@ impl<T: ?Sized> Drop for Arc<T> {
     fn drop(&mut self) {
         // Because `fetch_sub` is already atomic, we do not need to synchronize
         // with other threads unless we are going to delete the object.
-        if self.inner().count.fetch_sub(1, AcqRel) != 1 {
+        if self.inner().count.fetch_sub(1, Acquire) != 1 {
             return;
         }
 
